@@ -1,10 +1,9 @@
 import sys
-from pprint import pprint
 from operator import mul
 from functools import reduce
 
-#f = 'day15.input.txt'
-f = 'day15.sample.txt'
+f = 'day15.input.txt'
+#f = 'day15.sample.txt'
 
 try:
     lines = tuple(open(f, 'r'))
@@ -24,38 +23,31 @@ for line in lines:
         'texture': int(words[8]),
         'calories': int(words[10])
     })
-    
-#pprint(ingredients)
-
-# necunoscutele: imi trebuie teaspoons de fiecare ingredient, suma lor este 100
-teaspoons = [0] * len(ingredients)
 
 results = []
 # avem doar 2 valori de cantitati pentru teaspoons, x, y, x + y = 100, rescriem y -> y = x - 100, simplificam sistemul
 # iteram prin toate valorile si calculam lista de t
-for quant in range(100):
-    # zero filled list de totaluri pe fiecare proprietate in functie de numarul de teaspoons
-    t = [0] * (len(ingredients[0]) - 2)   # -2 pentru ca nu luam in calcul caloriile si numele din dict    
-    
-    ing1 = ingredients[0]
-    ing2 = ingredients[1]
-    
-    t[0] = quant * (ing1['capacity'] - ing2['capacity']) + 100 * ing2['capacity']
-    if t[0] < 1:
-        continue
-    
-    t[1] = quant * (ing1['durability'] - ing2['durability']) + 100 * ing2['durability']
-    if t[1] < 1:
-        continue
-    
-    t[2] = quant * (ing1['flavor'] - ing2['flavor']) + 100 * ing2['flavor']
-    if t[2] < 1:
-        continue
-    
-    t[3] = quant * (ing1['texture'] - ing2['texture']) + 100 * ing2['texture']
-    if t[3] < 1:
-        continue
-    
-    results.append(t)
-    
-print(max(map(lambda x: reduce(mul, x), results)))
+
+for x in range(100):
+    for y in range(100):
+        for z in range(100):
+            v = 100 - (x + y + z)
+            
+            # valorile de cantitati teaspoons pentru fiecare ingredient
+            if v + x + y + z > 100:
+                continue
+            
+            t = [0] * 4
+            
+            skip = False
+            for idx, prop in enumerate(['capacity', 'durability', 'flavor', 'texture']):
+                t[idx] = v * ingredients[0][prop] + x * ingredients[1][prop] + y * ingredients[2][prop] + z * ingredients[3][prop]
+                if t[idx] < 1:
+                    skip = True
+                
+            if skip == True:
+                continue
+            
+            results.append(reduce(mul, t))
+            
+print(max(results))
