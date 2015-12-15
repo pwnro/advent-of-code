@@ -24,7 +24,8 @@ for line in lines:
         'calories': int(words[10])
     })
 
-results = []
+part1 = []
+part2 = []
 # avem doar 2 valori de cantitati pentru teaspoons, x, y, x + y = 100, rescriem y -> y = x - 100, simplificam sistemul
 # iteram prin toate valorile si calculam lista de t
 
@@ -44,10 +45,20 @@ for x in range(100):
                 t[idx] = v * ingredients[0][prop] + x * ingredients[1][prop] + y * ingredients[2][prop] + z * ingredients[3][prop]
                 if t[idx] < 1:
                     skip = True
-                
+
             if skip == True:
                 continue
+                    
+            score = reduce(mul, t)
             
-            results.append(reduce(mul, t))
+            part1.append(score)
+                    
+            # aceasta reteta trebuie sa aiba un numar de calorii de 500
+            prop = 'calories'
+            cals = v * ingredients[0][prop] + x * ingredients[1][prop] + y * ingredients[2][prop] + z * ingredients[3][prop]
             
-print(max(results))
+            if cals == 500:    
+                part2.append(reduce(mul, t))
+            
+print('part1: %d' % max(part1))
+print('part2: %d' % max(part2))
