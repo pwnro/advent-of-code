@@ -19,7 +19,7 @@ for line in lines:
         'rest': int(words[-2])      # s
     })
 
-race_len = 2503 
+race_len = 1100
 
 distances = []
 for reindeer in reindeers:    
