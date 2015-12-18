@@ -48,7 +48,7 @@ def next_state(matrix):
         matrix[matrix_size-1][matrix_size-1] = 'p2'
         matrix[matrix_size-1][0] = 'p2'
         
-    matrix_padded = pad_matrix(matrix.copy())
+    matrix_padded = pad_matrix(matrix)
     matrix_new = matrix.copy()
     
     for i in range(padded_matrix_size):
